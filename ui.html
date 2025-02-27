@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 16px;
+      color: #333;
+    }
+    
+    h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    
+    label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    input, button {
+      height: 32px;
+      font-size: 12px;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    input {
+      padding: 0 8px;
+      border: 1px solid #E5E5E5;
+      margin-bottom: 4px;
+    }
+    
+    input[type="color"] {
+      padding: 0 2px;
+      width: 100%;
+    }
+    
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .row > div {
+      flex: 1;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    
+    .buttons button {
+      flex: 1;
+      background-color: #18A0FB;
+      color: white;
+      border: none;
+      padding: 0 16px;
+      cursor: pointer;
+    }
+    
+    .buttons button:hover {
+      background-color: #0D8DE3;
+    }
+    
+    .buttons button#cancel {
+      background-color: #F5F5F5;
+      color: #333;
+      border: 1px solid #E5E5E5;
+    }
+    
+    .buttons button#cancel:hover {
+      background-color: #EBEBEB;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Gradient Color Boxes</h2>
+    
+    <div class="field-group">
+      <label for="color1">Starting Color</label>
+      <input type="color" id="color1" value="#FF0000">
+    </div>
+    
+    <div class="field-group">
+      <label for="color2">Ending Color</label>
+      <input type="color" id="color2" value="#0000FF">
+    </div>
+    
+    <div class="field-group">
+      <label for="splitCount">Number of Boxes</label>
+      <input type="number" id="splitCount" min="2" max="50" value="5">
+    </div>
+    
+    <div class="row">
+      <div class="field-group">
+        <label for="rectangleWidth">Width (px)</label>
+        <input type="number" id="rectangleWidth" min="10" value="100">
+      </div>
+      
+      <div class="field-group">
+        <label for="rectangleHeight">Height (px)</label>
+        <input type="number" id="rectangleHeight" min="10" value="100">
+      </div>
+    </div>
+    
+    <div class="field-group">
+      <label for="spacing">Spacing (px)</label>
+      <input type="number" id="spacing" min="0" value="10">
+    </div>
+    
+    <div class="buttons">
+      <button id="create">Create</button>
+      <button id="cancel">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('create').onclick = () => {
+      const color1 = document.getElementById('color1').value;
+      const color2 = document.getElementById('color2').value;
+      const splitCount = parseInt(document.getElementById('splitCount').value, 10);
+      const rectangleWidth = parseInt(document.getElementById('rectangleWidth').value, 10);
+      const rectangleHeight = parseInt(document.getElementById('rectangleHeight').value, 10);
+      const spacing = parseInt(document.getElementById('spacing').value, 10);
+      
+      parent.postMessage({
+        pluginMessage: {
+          type: 'create-gradient-boxes',
+          color1,
+          color2,
+          splitCount,
+          rectangleWidth,
+          rectangleHeight,
+          spacing
+        }
+      }, '*');
+    };
+
+    document.getElementById('cancel').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*');
+    };
+  </script>
+</body>
+</html>
